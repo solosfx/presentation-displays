@@ -137,10 +137,13 @@ public class SwiftPresentationDisplaysPlugin: NSObject, FlutterPlugin {
             if (window != nil){
                 window!.isHidden=false
                 if (window!.rootViewController == nil || !(window!.rootViewController is FlutterViewController)){
-                    let extVC = FlutterViewController(project: nil, initialRoute: routerName, nibName: nil, bundle: nil)
-                    SwiftPresentationDisplaysPlugin.controllerAdded!(extVC)
+                    let newEngine = FlutterEngine()
+                    newEngine.run(withEntrypoint: "secondaryDisplayMain", initialRoute: routerName)
+                    
+                    let extVC = FlutterViewController(engine: newEngine, nibName: nil, bundle: nil)
                     window?.rootViewController = extVC
-
+                    
+                    SwiftPresentationDisplaysPlugin.controllerAdded!(extVC)
                     self.flutterEngineChannel = FlutterMethodChannel(name: "presentation_displays_plugin_engine", binaryMessenger: extVC.binaryMessenger)
                 }
             }
