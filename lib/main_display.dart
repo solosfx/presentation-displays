@@ -7,8 +7,7 @@ import 'package:presentation_displays/secondary_display.dart';
 /// [MainDisplay.callback] instance of [ArgumentsCallback] to receive data transmitted from the [DisplayManager].
 /// [MainDisplay.child] child widget of main display
 class MainDisplay extends StatefulWidget {
-  const MainDisplay({Key? key, required this.callback, required this.child})
-      : super(key: key);
+  const MainDisplay({super.key, required this.callback, required this.child});
 
   /// instance of [ArgumentsCallback] to receive data transmitted from the [DisplaysManager].
   final ArgumentsCallback callback;
@@ -17,10 +16,10 @@ class MainDisplay extends StatefulWidget {
   final Widget child;
 
   @override
-  _MainDisplayState createState() => _MainDisplayState();
+  MainDisplayState createState() => MainDisplayState();
 }
 
-class _MainDisplayState extends State<MainDisplay> {
+class MainDisplayState extends State<MainDisplay> {
   final _mainChannel = "main_display_channel";
   MethodChannel? _mainMethodChannel;
 
@@ -35,7 +34,7 @@ class _MainDisplayState extends State<MainDisplay> {
     return widget.child;
   }
 
-  _addListenerForMain(ArgumentsCallback function) {
+  void _addListenerForMain(ArgumentsCallback function) {
     _mainMethodChannel = MethodChannel(_mainChannel);
     _mainMethodChannel?.setMethodCallHandler((call) async {
       function(call.arguments);
