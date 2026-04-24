@@ -43,5 +43,15 @@ class SecondaryDisplayState extends State<SecondaryDisplay> {
     _presentationMethodChannel?.setMethodCallHandler((call) async {
       function(call.arguments);
     });
+    // Signal to the main engine that this secondary display is mounted and
+    // its method handler is live. The main engine uses this handshake to
+    // decide when it is safe to push the first payload (e.g. backdrop) —
+    // replacing a fragile fixed delay.
+    // `catchError` swallows MissingPluginException on platforms whose native
+    // side doesn't implement the handshake (e.g. Android). Those platforms
+    // will fall back to the 5 s timeout in the main-engine waiter.
+    _presentationMethodChannel
+        ?.invokeMethod('secondaryReady')
+        .catchError((_) => null);
   }
 }
